@@ -1,11 +1,16 @@
 from services.prediction_service import predict_student
 
 def predictHandler(validated_data):
-    data_student = validated_data['data_student']
+    data_students = validated_data['data_student']
     models = validated_data['models']
-    result = predict_student(
-        data_student.model_dump(),
-        models
-    )
+    is_list = validated_data['is_list']
 
-    return result
+    results = []
+    for student in data_students:
+        result = predict_student(
+            student.model_dump(),
+            models
+        )
+        results.append(result)
+
+    return results if is_list else results[0]

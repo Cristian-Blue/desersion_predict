@@ -6,9 +6,10 @@ API REST basada en Flask diseñada para predecir el riesgo de deserción de estu
 
 ## 🚀 Características Principales
 
+*   **Predicción Individual y por Lotes (Batch)**: El endpoint de predicción admite tanto un único estudiante (objeto JSON) como un conjunto masivo de estudiantes (arreglo de objetos JSON) en la misma petición.
 *   **Modelos Soportados**: Carga y ejecución de pipelines de **Random Forest** y **XGBoost** serializados con `joblib`.
-*   **Explicabilidad Local**: Implementación de **SHAP** para indicar cuáles variables aumentan, reducen o favorecen la permanencia/deserción del estudiante.
-*   **Validación de Datos**: Validación estricta del esquema de datos utilizando `pydantic` en el punto de entrada.
+*   **Explicabilidad Local**: Implementación de **SHAP** para generar las explicaciones de impacto individual por cada estudiante predicho, indicando qué variables favorecen o disminuyen su permanencia.
+*   **Validación de Datos**: Validación estricta de payloads usando `pydantic` para asegurar la existencia y los rangos correctos de los 38 atributos requeridos del estudiante.
 *   **Preparado para Producción**: Contenerizado con Docker y orquestado mediante Docker Compose, corriendo bajo un servidor WSGI productivo (`gunicorn`).
 
 ---
@@ -110,21 +111,26 @@ La aplicación incluye soporte listo para producción con Gunicorn.
 
 ## 📡 API Reference
 
-### Realizar una Predicción
+### Realizar una Predicción (Individual o en Lote)
 
 *   **Ruta:** `/api/v1/predict`
 *   **Método:** `POST`
 *   **Headers:** `Content-Type: application/json`
 
-#### Payload de Entrada (Ejemplo)
+El cuerpo de la petición debe contener el modelo a utilizar (`random_forest` o `xgb`) y un campo `data` que puede ser un **objeto individual** o un **arreglo de objetos** de estudiantes.
 
-El cuerpo de la petición debe contener el modelo a utilizar (`random_forest` o `xgb`) y un objeto `data` con la información del estudiante:
+> [!WARNING]
+> **Formato numérico obligatorio para variables del Pipeline**:
+> Aunque algunas variables como `COD_CARRERA`, `DEPT_COLEGIO`, `MPIO_COLEGIO`, `TIPO_DISCAPACIDAD` y `TIPO_VICTIMA` están declaradas como strings en el validador, **deben ser strings numéricos** (ej. `"10"`, `"5001"`, `"0"`, etc.) que correspondan a las codificaciones numéricas originales utilizadas en el entrenamiento del modelo. De lo contrario, el imputador numérico del pipeline (`SimpleImputer` con mediana) fallará al intentar transformarlas a flotantes.
 
+#### Opción A: Envío de Registro Individual
+
+##### Payload de Entrada
 ```json
 {
   "model": "random_forest",
   "data": {
-    "COD_CARRERA": "ING_SISTEMAS",
+    "COD_CARRERA": "10",
     "ANO": 2026,
     "SEMESTRE": 1,
     "SEXO": "F",
@@ -141,8 +147,8 @@ El cuerpo de la petición debe contener el modelo a utilizar (`random_forest` o 
     "ESTRATO_SOCIAL": "3",
     "ESTRATO": "3",
     "NATU_COLEGIO": "OFICIAL",
-    "DEPT_COLEGIO": "ANTIOQUIA",
-    "MPIO_COLEGIO": "MEDELLIN",
+    "DEPT_COLEGIO": "5",
+    "MPIO_COLEGIO": "5001",
     "SANCION": 0,
     "PERIODO_SANCION": 0,
     "AM_REALIZADA": 0,
@@ -155,24 +161,19 @@ El cuerpo de la petición debe contener el modelo a utilizar (`random_forest` o 
     "DEUDA": 0,
     "DESCUENTO": 0,
     "CONDICION_DISCAPACIDAD": 0,
-    "TIPO_DISCAPACIDAD": "NINGUNA",
+    "TIPO_DISCAPACIDAD": "0",
     "GRUPO_ETNICO": 0,
     "COMUNIDAD_NEGRA": 0,
     "NUMERO_HIJOS": 0,
     "REGISTRO_VICTIMA": "N",
-    "TIPO_VICTIMA": "NINGUNA",
+    "TIPO_VICTIMA": "0",
     "ICFES": 320
   }
 }
 ```
 
-> [!NOTE]
-> Todos los campos en `data` son validados a nivel de tipo de datos y rangos (por ejemplo, `EDAD` entre 15 y 100, `PROMEDIO_ACUM` entre 0.0 y 5.0) por el validador de `pydantic`.
-
-#### Respuesta de Éxito (`200 OK`)
-
-La respuesta devuelve el resultado de la predicción, la confianza asociada y los principales factores explicativos calculados mediante SHAP:
-
+##### Respuesta Exitosa (`200 OK`)
+Devuelve un único objeto JSON con la predicción, estado, confianza y las razones individuales basadas en SHAP:
 ```json
 {
   "prediction": 1,
@@ -190,50 +191,141 @@ La respuesta devuelve el resultado de la predicción, la confianza asociada y lo
       "value": 2,
       "importance": 0.125432,
       "direction": "DISMINUYE_PERMANENCIA"
-    },
-    {
-      "feature": "CRED_MATRICULADOS",
-      "value": 18,
-      "importance": 0.087654,
-      "direction": "FAVORECE_PERMANENCIA"
-    },
-    {
-      "feature": "EDAD",
-      "value": 21,
-      "importance": 0.045678,
-      "direction": "FAVORECE_PERMANENCIA"
-    },
-    {
-      "feature": "DEUDA",
-      "value": 0,
-      "importance": 0.034567,
-      "direction": "FAVORECE_PERMANENCIA"
     }
   ]
 }
 ```
 
-*   **`prediction`**: Representa la clase predicha (`1` para Activo, `0` para Desertor).
-*   **`status`**: Etiqueta legible del estado (`ACTIVO` o `DESERTOR`).
-*   **`confidence`**: Nivel de certidumbre del modelo (entre 0.0 y 1.0).
-*   **`reason`**: Lista de las variables con mayor influencia en la decisión final.
-    *   `direction` puede ser `FAVORECE_PERMANENCIA` o `DISMINUYE_PERMANENCIA` si la predicción es 1 (`ACTIVO`), y `AUMENTA_RIESGO` o `REDUCE_RIESGO` si la predicción es 0 (`DESERTOR`).
+---
 
-#### Respuesta de Error (`400 Bad Request`)
+#### Opción B: Envío de Varios Registros (Arreglo)
 
-Si el JSON recibido no cumple con el esquema definido por `StudentPredictionRequest`:
-
+##### Payload de Entrada
 ```json
 {
-  "error": [
+  "model": "random_forest",
+  "data": [
     {
-      "loc": ["data", "PROMEDIO_ACUM"],
-      "msg": "Input should be less than or equal to 5",
-      "type": "less_than_equal"
+      "COD_CARRERA": "10",
+      "ANO": 2026,
+      "SEMESTRE": 1,
+      "SEXO": "F",
+      "EDAD": 21,
+      "PROMEDIO_ACUM": 4.2,
+      "CRE_APROBADOS_TOTAL": 90.0,
+      "CRE_REPROBADOSTOTAL": 2,
+      "CRED_PERDIDOS": 4,
+      "CRED_APROBADOS": 86,
+      "CRED_MATRICULADOS": 18,
+      "NIVEL": 5,
+      "ALU_TESIS": "N",
+      "ESTADO_CIVIL": "SOLTERO",
+      "ESTRATO_SOCIAL": "3",
+      "ESTRATO": "3",
+      "NATU_COLEGIO": "OFICIAL",
+      "DEPT_COLEGIO": "5",
+      "MPIO_COLEGIO": "5001",
+      "SANCION": 0,
+      "PERIODO_SANCION": 0,
+      "AM_REALIZADA": 0,
+      "AN_DISCIPLINARIA": 0,
+      "PSICOLOGIA": 0,
+      "MEDICO": 1,
+      "BECATRABAJO": 0,
+      "REINTEGROS": 0,
+      "CANCELA_MATERIA": 0,
+      "DEUDA": 0,
+      "DESCUENTO": 0,
+      "CONDICION_DISCAPACIDAD": 0,
+      "TIPO_DISCAPACIDAD": "0",
+      "GRUPO_ETNICO": 0,
+      "COMUNIDAD_NEGRA": 0,
+      "NUMERO_HIJOS": 0,
+      "REGISTRO_VICTIMA": "N",
+      "TIPO_VICTIMA": "0",
+      "ICFES": 320
+    },
+    {
+      "COD_CARRERA": "10",
+      "ANO": 2026,
+      "SEMESTRE": 2,
+      "SEXO": "M",
+      "EDAD": 24,
+      "PROMEDIO_ACUM": 2.8,
+      "CRE_APROBADOS_TOTAL": 45.0,
+      "CRE_REPROBADOSTOTAL": 8,
+      "CRED_PERDIDOS": 16,
+      "CRED_APROBADOS": 40,
+      "CRED_MATRICULADOS": 12,
+      "NIVEL": 3,
+      "ALU_TESIS": "N",
+      "ESTADO_CIVIL": "SOLTERO",
+      "ESTRATO_SOCIAL": "2",
+      "ESTRATO": "2",
+      "NATU_COLEGIO": "OFICIAL",
+      "DEPT_COLEGIO": "5",
+      "MPIO_COLEGIO": "5001",
+      "SANCION": 0,
+      "PERIODO_SANCION": 0,
+      "AM_REALIZADA": 0,
+      "AN_DISCIPLINARIA": 0,
+      "PSICOLOGIA": 1,
+      "MEDICO": 0,
+      "BECATRABAJO": 0,
+      "REINTEGROS": 1,
+      "CANCELA_MATERIA": 2,
+      "DEUDA": 0,
+      "DESCUENTO": 0,
+      "CONDICION_DISCAPACIDAD": 0,
+      "TIPO_DISCAPACIDAD": "0",
+      "GRUPO_ETNICO": 0,
+      "COMUNIDAD_NEGRA": 0,
+      "NUMERO_HIJOS": 0,
+      "REGISTRO_VICTIMA": "N",
+      "TIPO_VICTIMA": "0",
+      "ICFES": 280
     }
   ]
 }
 ```
+
+##### Respuesta Exitosa (`200 OK`)
+Devuelve un arreglo JSON con el resultado de predicción individual y explicabilidad SHAP para cada estudiante en el mismo orden de envío:
+```json
+[
+  {
+    "prediction": 1,
+    "confidence": 0.9254,
+    "status": "ACTIVO",
+    "reason": [
+      {
+        "feature": "PROMEDIO_ACUM",
+        "value": 4.2,
+        "importance": 0.234567,
+        "direction": "FAVORECE_PERMANENCIA"
+      }
+    ]
+  },
+  {
+    "prediction": 0,
+    "confidence": 0.8123,
+    "status": "DESERTOR",
+    "reason": [
+      {
+        "feature": "CRE_REPROBADOSTOTAL",
+        "value": 8,
+        "importance": 0.345678,
+        "direction": "AUMENTA_RIESGO"
+      }
+    ]
+  }
+]
+```
+
+#### Respuestas de Error
+
+*   **`400 Bad Request`**: Si el formato JSON recibido no cumple con el esquema de `StudentPredictionRequest`.
+*   **`500 Internal Server Error`**: Si ocurre algún error en la transformación o ejecución de la predicción en el pipeline.
 
 ---
 

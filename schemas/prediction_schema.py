@@ -82,20 +82,34 @@ class StudentPredictionRequest(BaseModel):
 def validateContent(body):
     data = body['data']
     models = body['model']
-    expected_features =["COD_CARRERA", "SEMESTRE", "SEXO", "EDAD", "PROMEDIO_ACUM", "CRE_APROBADOS_TOTAL", "CRE_REPROBADOSTOTAL", "CRED_PERDIDOS", "CRED_APROBADOS", "CRED_MATRICULADOS", "NIVEL", "ALU_TESIS", "ESTADO_CIVIL", "ESTRATO_SOCIAL", "ESTRATO", "NATU_COLEGIO", "DEPT_COLEGIO", "MPIO_COLEGIO", "SANCION", "PERIODO_SANCION", "AM_REALIZADA", "AN_DISCIPLINARIA", "PSICOLOGIA", "MEDICO", "BECATRABAJO", "REINTEGROS", "CANCELA_MATERIA", "DEUDA", "DESCUENTO", "CONDICION_DISCAPACIDAD", "TIPO_DISCAPACIDAD", "GRUPO_ETNICO", "COMUNIDAD_NEGRA", "NUMERO_HIJOS", "REGISTRO_VICTIMA", "TIPO_VICTIMA", "ICFES"]
+    expected_features = ["COD_CARRERA", "ANO", "SEMESTRE", "SEXO", "EDAD", "PROMEDIO_ACUM", "CRE_APROBADOS_TOTAL", "CRE_REPROBADOSTOTAL", "CRED_PERDIDOS", "CRED_APROBADOS", "CRED_MATRICULADOS", "NIVEL", "ALU_TESIS", "ESTADO_CIVIL", "ESTRATO_SOCIAL", "ESTRATO", "NATU_COLEGIO", "DEPT_COLEGIO", "MPIO_COLEGIO", "SANCION", "PERIODO_SANCION", "AM_REALIZADA", "AN_DISCIPLINARIA", "PSICOLOGIA", "MEDICO", "BECATRABAJO", "REINTEGROS", "CANCELA_MATERIA", "DEUDA", "DESCUENTO", "CONDICION_DISCAPACIDAD", "TIPO_DISCAPACIDAD", "GRUPO_ETNICO", "COMUNIDAD_NEGRA", "NUMERO_HIJOS", "REGISTRO_VICTIMA", "TIPO_VICTIMA", "ICFES"]
 
-    received = set(data.keys())
-    expected_set = set(expected_features)
+    is_list = isinstance(data, list)
+    data_list = data if is_list else [data]
 
-    missing = expected_set - received
-    extra = received - expected_set
-    
+    validated_students = []
+    all_missing = set()
+    all_extra = set()
+
+    for item in data_list:
+        received = set(item.keys())
+        expected_set = set(expected_features)
+        
+        missing = expected_set - received
+        extra = received - expected_set
+        
+        all_missing.update(missing)
+        all_extra.update(extra)
+        
+        validated_students.append(StudentPredictionRequest(**item))
+
     return {
-        "valid" : len(missing) == 0 and len(extra) == 0,
-        "missing": list(missing),
-        "extra": list(extra),
+        "valid": len(all_missing) == 0 and len(all_extra) == 0,
+        "missing": list(all_missing),
+        "extra": list(all_extra),
         "all_features": expected_features,
-        "data_student": StudentPredictionRequest(**data),
-        "models": models
+        "data_student": validated_students,
+        "models": models,
+        "is_list": is_list
     }
     
