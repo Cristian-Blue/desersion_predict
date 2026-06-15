@@ -3,10 +3,6 @@ import pandas as pd
 
 
 def to_python_type(value):
-    """
-    Convierte tipos de numpy/pandas a tipos nativos de Python
-    para evitar errores de serialización JSON.
-    """
 
     if value is None:
         return None
@@ -29,19 +25,29 @@ def to_python_type(value):
     return value
 
 
-def get_shap(data: dict, pipeline, explainer, top_n: int = 5):
+def get_shap(
+    data: dict,
+    pipeline,
+    explainer,
+    prediction_class: int,
+    top_n: int = 5,
+    type_model: bool = True
+):
 
     try:
 
-        # DataFrame del estudiante
-        df = pd.DataFrame(data)
+        # DataFrame original
+        if type_model:
+            df = pd.DataFrame([data])
+        else:
+            df =  pd.DataFrame(data)
 
-        # Transformación igual al entrenamiento
+        # Transformación exactamente igual al entrenamiento
         X_trans = pipeline.named_steps[
             "preprocessing"
         ].transform(df)
 
-        # Nombres de variables transformadas
+        # Variables transformadas
         feature_names = pipeline.named_steps[
             "preprocessing"
         ].get_feature_names_out()
@@ -53,23 +59,58 @@ def get_shap(data: dict, pipeline, explainer, top_n: int = 5):
 
         values = np.array(shap_values)
 
-        # Compatibilidad RandomForest / XGBoost
+        print(
+            "Prediction class:",
+            prediction_class
+        )
+
+        print(
+            "SHAP shape:",
+            values.shape
+        )
+
+        # ------------------------
+        # RANDOM FOREST ANTIGUO
+        # ------------------------
         if isinstance(shap_values, list):
 
-            # Versiones antiguas de SHAP
             shap_class = np.array(
-                shap_values[1]
+                shap_values[prediction_class]
             )[0]
 
+        # ------------------------
+        # RANDOM FOREST NUEVO
+        # shape=(1,n_features,2)
+        # ------------------------
         elif len(values.shape) == 3:
 
-            # SHAP moderno multiclase
-            shap_class = values[0, :, 1]
+            shap_class = values[
+                0,
+                :,
+                prediction_class
+            ]
+
+        # ------------------------
+        # XGBOOST BINARIO
+        # shape=(1,n_features)
+        # ------------------------
+        elif len(values.shape) == 2:
+
+            shap_class = values[0]
+
+        # ------------------------
+        # XGBOOST EXTRAÑO
+        # shape=(n_features,)
+        # ------------------------
+        elif len(values.shape) == 1:
+
+            shap_class = values
 
         else:
 
-            # SHAP binario
-            shap_class = values[0]
+            raise Exception(
+                f"Formato SHAP no soportado: {values.shape}"
+            )
 
         result = []
 
@@ -80,13 +121,9 @@ def get_shap(data: dict, pipeline, explainer, top_n: int = 5):
 
             feature_clean = feature
 
-            # Elimina prefijos:
-            # num__
-            # cat__
             if "__" in feature_clean:
                 feature_clean = feature_clean.split("__")[1]
 
-            # Valor original
             value = None
 
             if feature_clean in df.columns:
@@ -97,30 +134,46 @@ def get_shap(data: dict, pipeline, explainer, top_n: int = 5):
                 6
             )
 
-            direction = (
-                "AUMENTA_RIESGO"
-                if impact_value < 0
-                else "REDUCE_RIESGO"
-            )
+            # Dirección según clase predicha
+            if prediction_class == 0:
+
+                direction = (
+                    "AUMENTA_RIESGO"
+                    if impact_value > 0
+                    else "REDUCE_RIESGO"
+                )
+
+            else:
+
+                direction = (
+                    "FAVORECE_PERMANENCIA"
+                    if impact_value > 0
+                    else "DISMINUYE_PERMANENCIA"
+                )
 
             result.append({
                 "feature": feature_clean,
-                "value": to_python_type(value),
-                "impact": impact_value,
+                "value": to_python_type(
+                    value
+                ),
+                "importance": round(
+                    abs(impact_value),
+                    6
+                ),
                 "direction": direction
             })
 
-        # Ordenar por importancia absoluta
         result.sort(
-            key=lambda x: abs(x["impact"]),
+            key=lambda x: x[
+                "importance"
+            ],
             reverse=True
         )
 
-        # Eliminar impactos insignificantes
         result = [
             item
             for item in result
-            if abs(item["impact"]) > 0.0001
+            if item["importance"] > 0.0001
         ]
 
         return result[:top_n]

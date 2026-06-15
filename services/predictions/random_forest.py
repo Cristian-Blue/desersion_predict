@@ -18,6 +18,12 @@ def randomForest(data: pd.DataFrame):
         result["status"] = "ACTIVO"
     else:
         result["status"] = "DESERTOR"
-        result["reason"] = get_shap(data, pipeline_rf, explainer_rf)
-
+    result["reason"] = get_shap(
+        data=data,
+        pipeline=pipeline_rf,
+        explainer=explainer_rf,
+        prediction_class=int(prediction),
+        top_n=5,
+        type_model=False
+    )
     return result

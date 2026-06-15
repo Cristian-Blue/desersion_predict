@@ -1,5 +1,5 @@
 from utils.model_loader import explainer_xgb
-from utils.model_loader import classifier_xgb
+from utils.model_loader import pipeline_xgb
 from services.shap_service import get_shap
 import pandas as pd
 from utils.model_loader import xgb_model
@@ -15,8 +15,13 @@ def xgb(data: dict):
     }
     if result["prediction"] == 1:
         result["status"] = "ACTIVO"
-        result["reason"] = get_shap(data, classifier_xgb, explainer_xgb)
     else:
         result["status"] = "DESERTOR"
-        result["reason"] = get_shap(data, classifier_xgb, explainer_xgb)
+    result["reason"] =get_shap(
+        data=data,
+        pipeline=pipeline_xgb,
+        explainer=explainer_xgb,
+        prediction_class=int(prediction),
+        top_n=5
+    )
     return result
