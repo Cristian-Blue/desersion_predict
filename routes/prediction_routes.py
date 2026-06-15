@@ -1,7 +1,6 @@
 # pyrefly: ignore [missing-import]
 from schemas.prediction_schema import validateContent
-from schemas.prediction_schema import StudentPredictionRequest
-from handlers import predict_handler
+from handlers.predict_handler import predictHandler
 # pyrefly: ignore [missing-import]
 from flask import Blueprint, request, jsonify
 # pyrefly: ignore [missing-import]
@@ -23,10 +22,8 @@ def predict():
 
         body = request.get_json()
 
-        validated_data = validateContent(**body)
-
-        result = predict_handler(validated_data)
-
+        validated_data = validateContent(body)
+        result = predictHandler(validated_data)
         return jsonify(result)
 
     except ValidationError as e:

@@ -24,8 +24,6 @@ class StudentPredictionRequest(BaseModel):
 
     CRED_MATRICULADOS: int = Field(..., ge=0)
 
-    MATERIAS_PERDIDAS: int = Field(..., ge=0)
-
     NIVEL: int = Field(..., ge=1)
 
     ALU_TESIS: Literal["S", "N"]
@@ -79,11 +77,11 @@ class StudentPredictionRequest(BaseModel):
     TIPO_VICTIMA: str
 
     ICFES: int = Field(..., ge=0)
+    CRE_APROBADOS_TOTAL : float = Field(..., ge=0)
 
 def validateContent(body):
     data = body['data']
-    models = body['models']
-    
+    models = body['model']
     expected_features =["COD_CARRERA", "SEMESTRE", "SEXO", "EDAD", "PROMEDIO_ACUM", "CRE_APROBADOS_TOTAL", "CRE_REPROBADOSTOTAL", "CRED_PERDIDOS", "CRED_APROBADOS", "CRED_MATRICULADOS", "NIVEL", "ALU_TESIS", "ESTADO_CIVIL", "ESTRATO_SOCIAL", "ESTRATO", "NATU_COLEGIO", "DEPT_COLEGIO", "MPIO_COLEGIO", "SANCION", "PERIODO_SANCION", "AM_REALIZADA", "AN_DISCIPLINARIA", "PSICOLOGIA", "MEDICO", "BECATRABAJO", "REINTEGROS", "CANCELA_MATERIA", "DEUDA", "DESCUENTO", "CONDICION_DISCAPACIDAD", "TIPO_DISCAPACIDAD", "GRUPO_ETNICO", "COMUNIDAD_NEGRA", "NUMERO_HIJOS", "REGISTRO_VICTIMA", "TIPO_VICTIMA", "ICFES"]
 
     received = set(data.keys())
@@ -91,7 +89,7 @@ def validateContent(body):
 
     missing = expected_set - received
     extra = received - expected_set
-
+    
     return {
         "valid" : len(missing) == 0 and len(extra) == 0,
         "missing": list(missing),

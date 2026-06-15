@@ -15,6 +15,7 @@ def xgb(data: dict):
     }
     if result["prediction"] == 1:
         result["status"] = "ACTIVO"
+        result["reason"] = get_shap(data, classifier_xgb, explainer_xgb)
     else:
         result["status"] = "DESERTOR"
         result["reason"] = get_shap(data, classifier_xgb, explainer_xgb)

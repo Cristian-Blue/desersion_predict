@@ -1,13 +1,14 @@
+from utils.model_loader import pipeline_rf
 import pandas as pd
-from utils.model_loader import classifier_rf, explainer_rf
+from utils.model_loader import explainer_rf
 from services.shap_service import get_shap
 
 def randomForest(data: pd.DataFrame):
 
     data = pd.DataFrame([data])
+    prediction = pipeline_rf.predict(data)[0] 
+    probability = pipeline_rf.predict_proba(data)[0].max()
 
-    prediction = classifier_rf.predict(data)[0]
-    probability = classifier_rf.predict_proba(data)[0].max()
     result =  {
         "prediction": int(prediction),
         "confidence": round(float(probability),4)
@@ -17,6 +18,6 @@ def randomForest(data: pd.DataFrame):
         result["status"] = "ACTIVO"
     else:
         result["status"] = "DESERTOR"
-        result["reason"] = get_shap(data, classifier_rf, explainer_rf)
+        result["reason"] = get_shap(data, pipeline_rf, explainer_rf)
 
     return result

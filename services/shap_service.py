@@ -2,40 +2,74 @@ import numpy as np
 import pandas as pd
 
 
-def get_shap(pipeline, explainer, data: dict, top_n: int = 5):
+def to_python_type(value):
+    """
+    Convierte tipos de numpy/pandas a tipos nativos de Python
+    para evitar errores de serialización JSON.
+    """
+
+    if value is None:
+        return None
+
+    if isinstance(value, np.integer):
+        return int(value)
+
+    if isinstance(value, np.floating):
+        return float(value)
+
+    if isinstance(value, np.bool_):
+        return bool(value)
+
+    if hasattr(value, "item"):
+        try:
+            return value.item()
+        except Exception:
+            pass
+
+    return value
+
+
+def get_shap(data: dict, pipeline, explainer, top_n: int = 5):
 
     try:
 
-        # Crear DataFrame
-        df = pd.DataFrame([data])
+        # DataFrame del estudiante
+        df = pd.DataFrame(data)
 
-        # Transformar igual que entrenamiento
+        # Transformación igual al entrenamiento
         X_trans = pipeline.named_steps[
             "preprocessing"
         ].transform(df)
 
-        # Obtener nombres de variables
+        # Nombres de variables transformadas
         feature_names = pipeline.named_steps[
             "preprocessing"
         ].get_feature_names_out()
 
-        # Calcular SHAP
+        # SHAP
         shap_values = explainer.shap_values(
             X_trans
         )
 
-        # Compatibilidad RF / XGB
+        values = np.array(shap_values)
+
+        # Compatibilidad RandomForest / XGBoost
         if isinstance(shap_values, list):
 
-            shap_class = shap_values[1][0]
+            # Versiones antiguas de SHAP
+            shap_class = np.array(
+                shap_values[1]
+            )[0]
 
-        elif len(np.array(shap_values).shape) == 3:
+        elif len(values.shape) == 3:
 
-            shap_class = shap_values[:, :, 1][0]
+            # SHAP moderno multiclase
+            shap_class = values[0, :, 1]
 
         else:
 
-            shap_class = shap_values[0]
+            # SHAP binario
+            shap_class = values[0]
 
         result = []
 
@@ -46,25 +80,48 @@ def get_shap(pipeline, explainer, data: dict, top_n: int = 5):
 
             feature_clean = feature
 
-            if "__" in feature:
-                feature_clean = feature.split("__")[1]
+            # Elimina prefijos:
+            # num__
+            # cat__
+            if "__" in feature_clean:
+                feature_clean = feature_clean.split("__")[1]
+
+            # Valor original
+            value = None
+
+            if feature_clean in df.columns:
+                value = df.iloc[0][feature_clean]
+
+            impact_value = round(
+                float(impact),
+                6
+            )
+
+            direction = (
+                "AUMENTA_RIESGO"
+                if impact_value < 0
+                else "REDUCE_RIESGO"
+            )
 
             result.append({
                 "feature": feature_clean,
-                "impact": round(
-                    float(impact),
-                    6
-                )
+                "value": to_python_type(value),
+                "impact": impact_value,
+                "direction": direction
             })
 
         # Ordenar por importancia absoluta
-        result = sorted(
-            result,
-            key=lambda x: abs(
-                x["impact"]
-            ),
+        result.sort(
+            key=lambda x: abs(x["impact"]),
             reverse=True
         )
+
+        # Eliminar impactos insignificantes
+        result = [
+            item
+            for item in result
+            if abs(item["impact"]) > 0.0001
+        ]
 
         return result[:top_n]
 
