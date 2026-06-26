@@ -8,7 +8,7 @@ services:
     image: desersion-predict:latest
     container_name: desersion_predict_app
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       - FLASK_ENV=production
       - PORT=5000
