@@ -90,7 +90,7 @@ Antes de iniciar la aplicación, asegúrate de colocar los archivos binarios de 
    ```bash
    python app.py
    ```
-   El servidor iniciará localmente en `http://127.0.0.1:5000`.
+    El servidor iniciará localmente en `http://127.0.0.1:5002` (puerto ajustado en macOS para evitar conflicto con AirPlay).
 
 ### Opción 2: Ejecución con Docker / Docker Compose
 
@@ -105,7 +105,7 @@ La aplicación incluye soporte listo para producción con Gunicorn.
    ```bash
    docker-compose down
    ```
-   El contenedor expone el puerto `5000` (`http://localhost:5000/api/v1/predict`).
+   El contenedor expone el puerto `5000` internamente, el cual está mapeado al puerto `5001` de la máquina host (`http://localhost:5001/api/v1/predict`).
 
 ---
 
@@ -130,6 +130,7 @@ El cuerpo de la petición debe contener el modelo a utilizar (`random_forest` o 
 {
   "model": "random_forest",
   "data": {
+    "CODIGO_ALUMNO": "00001",
     "COD_CARRERA": "10",
     "ANO": 2026,
     "SEMESTRE": 1,
@@ -206,6 +207,7 @@ Devuelve un único objeto JSON con la predicción, estado, confianza y las razon
   "model": "random_forest",
   "data": [
     {
+      "CODIGO_ALUMNO": "00001",
       "COD_CARRERA": "10",
       "ANO": 2026,
       "SEMESTRE": 1,
@@ -246,6 +248,7 @@ Devuelve un único objeto JSON con la predicción, estado, confianza y las razon
       "ICFES": 320
     },
     {
+      "CODIGO_ALUMNO": "00002",
       "COD_CARRERA": "10",
       "ANO": 2026,
       "SEMESTRE": 2,

@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "d72327b5-ec3b-4154-a0b6-fa6aead42f38",
+    "_postman_id": "d72327b5-ec3b-4154-a007-ac2f2ae31bf8",
     "name": "Predict",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "5636824"
@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"model\": \"random_forest\",\n    \"data\":[ {\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    },\n    {\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    }]\n}",
+          "raw": "{\n    \"model\": \"xgb\",\n    \"data\":[ {\n        \"CODIGO_ALUMNO\": \"00001\",\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    },\n    {\n        \"CODIGO_ALUMNO\": \"00002\",\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    }]\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -21,7 +21,7 @@
           }
         },
         "url": {
-          "raw": "http://127.0.0.1:5000/api/v1/predict",
+          "raw": "http://127.0.0.1:5002/api/v1/predict",
           "protocol": "http",
           "host": [
             "127",
@@ -29,7 +29,7 @@
             "0",
             "1"
           ],
-          "port": "5000",
+          "port": "5002",
           "path": [
             "api",
             "v1",
@@ -37,134 +37,40 @@
           ]
         }
       },
-      "response": [
-        {
-          "name": "Predict xbost",
-          "originalRequest": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"model\": \"xgb\",\n    \"data\":[ {\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    },\n    {\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    }]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://127.0.0.1:5000/api/v1/predict",
-              "protocol": "http",
-              "host": [
-                "127",
-                "0",
-                "0",
-                "1"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "v1",
-                "predict"
-              ]
+      "response": []
+    },
+    {
+      "name": "Predict random_forest",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"model\": \"random_forest\",\n    \"data\":[ {\n        \"CODIGO_ALUMNO\": \"00001\",\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    },\n    {\n        \"CODIGO_ALUMNO\": \"00002\",\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    }]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
             }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": null,
-          "header": [
-            {
-              "key": "Server",
-              "value": "Werkzeug/3.1.8 Python/3.11.15"
-            },
-            {
-              "key": "Date",
-              "value": "Mon, 15 Jun 2026 23:39:11 GMT"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Content-Length",
-              "value": "1062"
-            },
-            {
-              "key": "Access-Control-Allow-Origin",
-              "value": "*"
-            },
-            {
-              "key": "Connection",
-              "value": "close"
-            }
-          ],
-          "cookie": [],
-          "body": "[\n    {\n        \"confidence\": 0.6619,\n        \"prediction\": 0,\n        \"reason\": [\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CONDICION_DISCAPACIDAD\",\n                \"importance\": 0.184943,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"DESCUENTO\",\n                \"importance\": 0.155536,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_APROBADOS\",\n                \"importance\": 0.123547,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_MATRICULADOS\",\n                \"importance\": 0.090747,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRE_REPROBADOSTOTAL\",\n                \"importance\": 0.058658,\n                \"value\": 22\n            }\n        ],\n        \"status\": \"DESERTOR\"\n    },\n    {\n        \"confidence\": 0.6619,\n        \"prediction\": 0,\n        \"reason\": [\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CONDICION_DISCAPACIDAD\",\n                \"importance\": 0.184943,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"DESCUENTO\",\n                \"importance\": 0.155536,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_APROBADOS\",\n                \"importance\": 0.123547,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_MATRICULADOS\",\n                \"importance\": 0.090747,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRE_REPROBADOSTOTAL\",\n                \"importance\": 0.058658,\n                \"value\": 22\n            }\n        ],\n        \"status\": \"DESERTOR\"\n    }\n]"
+          }
         },
-        {
-          "name": "Predict random",
-          "originalRequest": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"model\": \"random_forest\",\n    \"data\":[ {\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    },\n    {\n        \"COD_CARRERA\": \"017\",\n        \"ANO\": 2026,\n        \"SEMESTRE\": 1,\n        \"SEXO\": \"M\",\n        \"EDAD\": 23,\n        \"PROMEDIO_ACUM\": 3.51,\n        \"CRE_APROBADOS_TOTAL\": 175,\n        \"CRE_REPROBADOSTOTAL\": 22,\n        \"CRED_PERDIDOS\": 0,\n        \"CRED_APROBADOS\": 0,\n        \"CRED_MATRICULADOS\": 0,\n        \"NIVEL\": 10,\n        \"ALU_TESIS\": \"S\",\n        \"ESTADO_CIVIL\": \"SO\",\n        \"ESTRATO_SOCIAL\": \"01\",\n        \"ESTRATO\": \"01\",\n        \"NATU_COLEGIO\": \"OFICIAL\",\n        \"DEPT_COLEGIO\": \"20\",\n        \"MPIO_COLEGIO\": \"001\",\n        \"SANCION\": 0,\n        \"PERIODO_SANCION\": 0,\n        \"AM_REALIZADA\": 0,\n        \"AN_DISCIPLINARIA\": 0,\n        \"PSICOLOGIA\": 0,\n        \"MEDICO\": 0,\n        \"BECATRABAJO\": 0,\n        \"REINTEGROS\": 0,\n        \"CANCELA_MATERIA\": 0,\n        \"DEUDA\": 0,\n        \"DESCUENTO\": 0,\n        \"CONDICION_DISCAPACIDAD\": 0,\n        \"TIPO_DISCAPACIDAD\": \"0\",\n        \"GRUPO_ETNICO\": 2,\n        \"COMUNIDAD_NEGRA\": 0,\n        \"NUMERO_HIJOS\": 0,\n        \"REGISTRO_VICTIMA\": \"S\",\n        \"TIPO_VICTIMA\": \"0\",\n        \"ICFES\": 323\n    }]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://127.0.0.1:5000/api/v1/predict",
-              "protocol": "http",
-              "host": [
-                "127",
-                "0",
-                "0",
-                "1"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "v1",
-                "predict"
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": null,
-          "header": [
-            {
-              "key": "Server",
-              "value": "Werkzeug/3.1.8 Python/3.11.15"
-            },
-            {
-              "key": "Date",
-              "value": "Mon, 15 Jun 2026 23:43:34 GMT"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Content-Length",
-              "value": "1062"
-            },
-            {
-              "key": "Access-Control-Allow-Origin",
-              "value": "*"
-            },
-            {
-              "key": "Connection",
-              "value": "close"
-            }
+        "url": {
+          "raw": "http://127.0.0.1:5002/api/v1/predict",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
           ],
-          "cookie": [],
-          "body": "[\n    {\n        \"confidence\": 0.6619,\n        \"prediction\": 0,\n        \"reason\": [\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CONDICION_DISCAPACIDAD\",\n                \"importance\": 0.184943,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"DESCUENTO\",\n                \"importance\": 0.155536,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_APROBADOS\",\n                \"importance\": 0.123547,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_MATRICULADOS\",\n                \"importance\": 0.090747,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRE_REPROBADOSTOTAL\",\n                \"importance\": 0.058658,\n                \"value\": 22\n            }\n        ],\n        \"status\": \"DESERTOR\"\n    },\n    {\n        \"confidence\": 0.6619,\n        \"prediction\": 0,\n        \"reason\": [\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CONDICION_DISCAPACIDAD\",\n                \"importance\": 0.184943,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"DESCUENTO\",\n                \"importance\": 0.155536,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_APROBADOS\",\n                \"importance\": 0.123547,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRED_MATRICULADOS\",\n                \"importance\": 0.090747,\n                \"value\": 0\n            },\n            {\n                \"direction\": \"AUMENTA_RIESGO\",\n                \"feature\": \"CRE_REPROBADOSTOTAL\",\n                \"importance\": 0.058658,\n                \"value\": 22\n            }\n        ],\n        \"status\": \"DESERTOR\"\n    }\n]"
+          "port": "5002",
+          "path": [
+            "api",
+            "v1",
+            "predict"
+          ]
         }
-      ]
+      },
+      "response": []
     }
   ]
 }

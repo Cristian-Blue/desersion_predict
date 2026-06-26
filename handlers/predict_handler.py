@@ -7,10 +7,13 @@ def predictHandler(validated_data):
 
     results = []
     for student in data_students:
+        student_copy = student.model_dump()
+        student_copy.pop('CODIGO_ALUMNO')
         result = predict_student(
-            student.model_dump(),
+            student_copy,
             models
         )
+        result['CODIGO_ALUMNO'] = student.CODIGO_ALUMNO
         results.append(result)
 
     return results if is_list else results[0]
